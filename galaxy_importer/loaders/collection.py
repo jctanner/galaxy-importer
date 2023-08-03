@@ -135,7 +135,8 @@ class CollectionLoader(object):
             "--parseable",
             "--nocolor",
         ]
-        self.log.debug("CMD: " + " ".join(cmd))
+        self.log.info("CMD: " + " ".join(cmd))
+        self.log.info(f"PATH: {self.path}")
         proc = Popen(
             cmd,
             cwd=self.path,
@@ -152,6 +153,12 @@ class CollectionLoader(object):
             self.log.error("Timeout on call to ansible-lint")
             proc.kill()
             outs, errs = proc.communicate()
+
+        self.log.info('--------------- LINT OUTS OUTPUT ------------------')
+        self.log.info(outs)
+        self.log.info('--------------- LINT ERRS OUTPUT ------------------')
+        self.log.info(errs)
+        self.log.info('--------------- END LINT OUTPUT  ------------------')
 
         for line in outs.splitlines():
             self.log.warning(line.strip())
