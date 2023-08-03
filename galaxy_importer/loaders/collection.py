@@ -122,6 +122,13 @@ class CollectionLoader(object):
             self.log.warning("ansible-lint not found, skipping lint of collection")
             return
 
+        self.log.info(f'------ FILES IN {self.path} -----')
+        pid = subprocess.run(f'find {self.path}', shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        filenames = pid.stdout.decode('utf-8').split('\n')
+        for fn in filenames:
+            self.log.info(fn)
+        self.log.info('----- END FILES -----')
+
         cmd = [
             "/usr/bin/env",
             f"ANSIBLE_LOCAL_TEMP={self.cfg.ansible_local_tmp}",
