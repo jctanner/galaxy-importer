@@ -123,13 +123,6 @@ class CollectionLoader(object):
             self.log.warning("ansible-lint not found, skipping lint of collection")
             return
 
-        self.log.info(f'------ FILES IN {self.path} -----')
-        pid = subprocess.run(f'find {self.path}', shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        filenames = pid.stdout.decode('utf-8').split('\n')
-        for fn in filenames:
-            self.log.info(fn)
-        self.log.info('----- END FILES -----')
-
         cmd = [
             "/usr/bin/env",
             f"ANSIBLE_LOCAL_TEMP={self.cfg.ansible_local_tmp}",
@@ -143,8 +136,14 @@ class CollectionLoader(object):
             "--parseable",
             "--nocolor",
         ]
+
+        self.log.info('--------------- LINT CMD ------------------')
         self.log.info("CMD: " + " ".join(cmd))
+        self.log.info('--------------- LINT CMD END ------------------')
+        self.log.info('--------------- LINT PATH ------------------')
         self.log.info(f"PATH: {self.path}")
+        self.log.info('--------------- LINT PATH END ------------------')
+
         proc = Popen(
             cmd,
             cwd=self.path,
@@ -167,6 +166,17 @@ class CollectionLoader(object):
         self.log.info('--------------- LINT ERRS OUTPUT ------------------')
         self.log.info(errs)
         self.log.info('--------------- END LINT OUTPUT  ------------------')
+
+        self.log.info('--------------- LINT RETURNCODE ------------------')
+        self.log.info(f'RC: {proc.returncode}')
+        self.log.info('------------- END LINT RETURNCODE ----------------')
+
+        self.log.info(f'------ FILES IN {self.path} -----')
+        pid = subprocess.run(f'find {self.path}', shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        filenames = pid.stdout.decode('utf-8').split('\n')
+        for fn in filenames:
+            self.log.info(fn)
+        self.log.info('----- END FILES -----')
 
         for line in outs.splitlines():
             self.log.warning(line.strip())
