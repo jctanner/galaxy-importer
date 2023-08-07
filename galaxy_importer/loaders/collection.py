@@ -137,9 +137,18 @@ class CollectionLoader(object):
             "--nocolor",
         ]
 
+        self.log.info('--------------- LINT WHOAMI --------------')
+        pid = subprocess.run('whaomi', shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        whoami = pid.stdout.decode('utf-8')
+        self.log.info(whaomi)
+
+        self.log.info('--------------- LINT $HOME ---------------')
+        self.log.info(os.path.expanduser("~"))
+
         self.log.info('--------------- LINT CMD ------------------')
         self.log.info("CMD: " + " ".join(cmd))
         self.log.info('--------------- LINT CMD END ------------------')
+
         self.log.info('--------------- LINT PATH ------------------')
         self.log.info(f"PATH: {self.path}")
         self.log.info('--------------- LINT PATH END ------------------')
