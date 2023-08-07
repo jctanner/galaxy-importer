@@ -138,9 +138,9 @@ class CollectionLoader(object):
         ]
 
         self.log.info('--------------- LINT WHOAMI --------------')
-        pid = subprocess.run('whaomi', shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        pid = subprocess.run('whaomi', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         whoami = pid.stdout.decode('utf-8')
-        self.log.info(whaomi)
+        self.log.info(whoami)
 
         self.log.info('--------------- LINT $HOME ---------------')
         self.log.info(os.path.expanduser("~"))
