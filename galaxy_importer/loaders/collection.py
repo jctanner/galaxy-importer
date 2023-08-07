@@ -137,13 +137,26 @@ class CollectionLoader(object):
             "--nocolor",
         ]
 
+        self.log.info('--------------- LINT ENV -----------------')
+        try:
+            for k, v in os.environ.items():
+                self.log.info(f'ENV {k}={v}')
+        except Exception as e:
+            self.log.info(e)
+
         self.log.info('--------------- LINT WHOAMI --------------')
-        pid = subprocess.run('whoami', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        whoami = pid.stdout.decode('utf-8')
-        self.log.info(whoami)
+        try:
+            pid = subprocess.run('whoami', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            whoami = pid.stdout.decode('utf-8')
+            self.log.info(whoami)
+        except Exception as e:
+            self.log.info(str(e))
 
         self.log.info('--------------- LINT $HOME ---------------')
-        self.log.info(os.path.expanduser("~"))
+        try:
+            self.log.info(os.path.expanduser("~"))
+        except Exception as e:
+            self.log.info(str(e))
 
         self.log.info('--------------- LINT CMD ------------------')
         self.log.info("CMD: " + " ".join(cmd))
